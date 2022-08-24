@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter import messagebox
 from datetime import date
 import tkinter.font as tk_font
+from mensagens import msg_erro_cadastro_apag, msg_erro_cadastro, msg_erro_apagar
 
 # criando as variaveis de listas que receberão os dados
 cod_equip_registro_lista = []
@@ -160,12 +161,14 @@ def cadastro_registro():
                 cod_pessoa_registro_lista[0] + "  -  " + \
                 local_registro_lista[0] + "  -  " + \
                 data_registro_lista[0]
+        lb6.configure(text=hist1, background='Gray', foreground='black')
 
         if len(cod_equip_registro_lista) > 1:
             hist2 = cod_equip_registro_lista[1] + "  -  " + \
                     cod_pessoa_registro_lista[1] + "  -  " + \
                     local_registro_lista[1] + "  -  " + \
                     data_registro_lista[1]
+            lb7.configure(text=hist2, background='Gray', foreground='black')
         else:
             hist2 = ''
 
@@ -174,6 +177,7 @@ def cadastro_registro():
                     cod_pessoa_registro_lista[2] + "  -  " + \
                     local_registro_lista[2] + "  -  " + \
                     data_registro_lista[2]
+            lb8.configure(text=hist3, background='Gray', foreground='black')
         else:
             hist3 = ''
 
@@ -182,6 +186,7 @@ def cadastro_registro():
                     cod_pessoa_registro_lista[3] + "  -  " + \
                     local_registro_lista[3] + "  -  " + \
                     data_registro_lista[3]
+            lb9.configure(text=hist4, background='Gray', foreground='black')
         else:
             hist4 = ''
 
@@ -190,18 +195,15 @@ def cadastro_registro():
                     cod_pessoa_registro_lista[4] + "  -  " + \
                     local_registro_lista[4] + "  -  " + \
                     data_registro_lista[4]
+            lb10.configure(text=hist5, background='Gray', foreground='black')
         else:
             hist5 = ''
 
-        lb6.configure(text=hist1, background='Gray', foreground='black')
-        lb7.configure(text=hist2, background='Gray', foreground='black')
-        lb8.configure(text=hist3, background='Gray', foreground='black')
-        lb9.configure(text=hist4, background='Gray', foreground='black')
-        lb10.configure(text=hist5, background='Gray', foreground='black')
-
         cod_equip_reg.delete(0, "end")
         cod_pessoa_reg.delete(0, "end")
-        local_reg.delete(0, "end")
+        local_reg.set('')
+        btn12.configure(command=comando_btn12)
+        btn13.configure(command=comando_btn13)
 
     btn11 = Button(app6, text='Carregar Dados', command=comando_btn61)
     btn11.place(x=165, y=225, height=40, width=170)
@@ -209,23 +211,49 @@ def cadastro_registro():
     # histórico dos ultimos 5 registros
 
     lb6 = Label(app6, text='', background='silver', foreground='black')
-    lb6.place(x=100, y=280, height=20, width=300)
+    lb6.place(x=50, y=280, height=20, width=400)
 
     lb7 = Label(app6, text='', background='silver', foreground='black')
-    lb7.place(x=100, y=310, height=20, width=300)
+    lb7.place(x=50, y=310, height=20, width=400)
 
     lb8 = Label(app6, text='', background='silver', foreground='black')
-    lb8.place(x=100, y=340, height=20, width=300)
+    lb8.place(x=50, y=340, height=20, width=400)
 
     lb9 = Label(app6, text='', background='silver', foreground='black')
-    lb9.place(x=100, y=370, height=20, width=300)
+    lb9.place(x=50, y=370, height=20, width=400)
 
     lb10 = Label(app6, text='', background='silver', foreground='black')
-    lb10.place(x=100, y=400, height=20, width=300)
+    lb10.place(x=50, y=400, height=20, width=400)
 
-    # botão para atualizar a planilha com os dados carregados
-    btn12 = Button(app6, text='Atualizar Planilha', command=atualizar_plan_registro)
-    btn12.place(x=165, y=440, height=40, width=170)
+    def comando_btn12():
+        if len(cod_equip_registro_lista) == 0:
+            return msg_erro_cadastro_apag()
+
+        atualizar_plan_registro()
+        messagebox.showinfo('Cadastrado', f'Os registros foi inserido com sucesso!!')
+        app6.destroy()
+
+    def comando_btn13():
+        cod_equip_registro_lista.clear()
+        cod_pessoa_registro_lista.clear()
+        local_registro_lista.clear()
+        data_registro_lista.clear()
+
+        lb6.configure(text='Preencha os dados novamente', background='yellow', foreground='black')
+        lb7.configure(text='', background='Silver', foreground='black')
+        lb8.configure(text='', background='Silver', foreground='black')
+        lb9.configure(text='', background='Silver', foreground='black')
+        lb10.configure(text='', background='Silver', foreground='black')
+        cod_equip_reg.delete(0, "end")
+        cod_pessoa_reg.delete(0, "end")
+        local_reg.set('')
+        btn13.configure(command=msg_erro_apagar)
+
+    btn12 = Button(app6, text='Cadastrar', command=msg_erro_cadastro)
+    btn12.place(x=50, y=440, height=40, width=150)
+
+    btn13 = Button(app6, text='Apagar', command=msg_erro_apagar)
+    btn13.place(x=300, y=440, height=40, width=150)
 
     app6.mainloop()
 
